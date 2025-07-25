@@ -43,6 +43,10 @@ is_sourced() {
 ##### source "$HERE_I_AM/modules/common.sh"
 ############### COMMON PART ENDS HERE ###############
 
+## IDEAS
+## - configure ssh key to connect to something (e.g. GitHub, a jump host etc.)
+##
+
 success=0
 if [ $# -gt 0 ]; then
 	if [ $1 = "editor_code" ]; then

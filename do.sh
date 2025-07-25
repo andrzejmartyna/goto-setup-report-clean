@@ -43,6 +43,15 @@ is_sourced() {
 ##### source "$HERE_I_AM/modules/common.sh"
 ############### COMMON PART ENDS HERE ###############
 
+## IDEAS
+## - support executable flag to be correctly handled in git repo
+##		- chmod +x path/to/script.sh
+##		- git add --chmod=+x path/to/script.sh
+##		- git update-index --chmod=+x path/to/script.sh
+## - support LF to be correctly handled in git repo
+##		- IMHO .gitattributes is better than global options (which are local on your computer)
+##
+
 success=0
 if [ $# -gt 0 ]; then
 	if [ $1 = "git_commit_all" ]; then
