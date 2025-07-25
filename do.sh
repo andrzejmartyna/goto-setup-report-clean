@@ -36,12 +36,12 @@ is_sourced() {
 	fi
 }
 
-##### COMMON PART ENDS HERE
 ##### It was not possible to place it in kind of "modules/common.sh" and source it
 ##### ... because there is no easy way to guess physical real path of the script if it is called from some place in sourced mode
 ##### (the path from where the script is called is then resolved not the physical path of the script called)
 ##### HERE_I_AM=$(dirname "${BASH_SOURCE[0]}")
 ##### source "$HERE_I_AM/modules/common.sh"
+############### COMMON PART ENDS HERE ###############
 
 success=0
 if [ $# -gt 0 ]; then

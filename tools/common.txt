@@ -42,28 +42,3 @@ is_sourced() {
 ##### HERE_I_AM=$(dirname "${BASH_SOURCE[0]}")
 ##### source "$HERE_I_AM/modules/common.sh"
 ############### COMMON PART ENDS HERE ###############
-
-success=0
-if [ $# -gt 0 ]; then
-	if [ $1 = "git_pretty_log" ]; then
-		if [ $# -gt 1 ]; then
-			git log --pretty=format:'%C(yellow)%h %Cred%ai %Cblue%an%Cgreen%d %Creset%s' --date=short -n $2
-		else
-			git log --pretty=format:'%C(yellow)%h %Cred%ai %Cblue%an%Cgreen%d %Creset%s' --date=short
-		fi
-		success=1
-	elif [ $1 = "where_i_am" ]; then
-		printf "The shell is\n"
-		printf "$SHELL\n"
-		printf "Tips for customizations depending on the shell\n"
-		printf "Shell configuration files: ~/.zshrc, ~/.bashrc, ~/.bash_profile\n"
-		success=1
-	fi
-fi
-
-if [[ $success -ne 1 ]]; then
-	printf "${RED}USE: report.sh with one of the forms:${NC}\n"
-    printf "${YELLOW}    - report.sh git_pretty_log --> pretty prints git log with given number of commits${NC}\n"
-    printf "${YELLOW}    - report.sh git_pretty_log X --> pretty prints git log with given number of commits${NC}\n"
-    printf "${YELLOW}    - report.sh where_i_am --> reports some information about place you are now${NC}\n"
-fi
