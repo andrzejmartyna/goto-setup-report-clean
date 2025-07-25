@@ -61,8 +61,24 @@ if [ $# -gt 0 ]; then
 					cd "$found_files"
 				else
 					printf "Multiple matches found:\n"
-					printf '%s\n' "$found_files"
-					printf "Please provide a more specific search term to narrow down to one result\n"
+					num=1
+					echo "$found_files" | while IFS= read -r line; do
+						printf "%d %s\n" "$num" "$line"
+						num=$((num+1))
+					done
+					printf "Provide a number or press Enter to skip: "
+					read user_choice
+					if [ -n "$user_choice" ]; then
+						if ! [[ "$user_choice" =~ ^[0-9]+$ ]] || [ "$user_choice" -lt 1 ] || [ "$user_choice" -gt "$line_count" ]; then
+							printf "Error: number out of range (1-%s)\n" "$line_count"
+						else
+							selected_line=$(echo "$found_files" | sed -n "${user_choice}p")
+							printf "$selected_line\n"
+							cd "$selected_line"
+						fi
+					else
+						printf "You chose not to go into any repo\n"
+					fi
 				fi
 			fi
 			success=1
