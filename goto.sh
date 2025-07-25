@@ -44,7 +44,7 @@ is_sourced() {
 ############### COMMON PART ENDS HERE ###############
 
 ## IDEAS
-## - TBD
+## - parametrize code_dir
 ##
 
 success=0
