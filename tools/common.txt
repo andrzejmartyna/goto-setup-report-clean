@@ -15,9 +15,17 @@ YELLOW=$BYellow
 GREEN=$BGreen
 NC='\033[0m' # No Color
 
+is_zsh() {
+	if [ -n "$ZSH_VERSION" ]; then
+		true # do not change it to "return 1" because it will not work as expected in sourced mode
+	else
+		false # do not change it to "return 0" because it will not work as expected in sourced mode
+	fi
+}
+
 is_sourced() {
 	sourced=0
-	if [ -n "$ZSH_VERSION" ]; then
+	if is_zsh; then
 		if [[ $ZSH_EVAL_CONTEXT == *:file:shfunc ]]; then
 			sourced=1
 		fi
@@ -27,12 +35,12 @@ is_sourced() {
 		fi
 	fi
 	if [[ $sourced -eq 1 ]]; then
-		[[ 1 == 1 ]]
+		true # do not change it to "return 1" because it will not work as expected in sourced mode
 	else
 		printf "This script modifies the calling session.\n"
 		printf "It means you have to run this script in 'sourced' mode so by using dot-space-script like this:\n"
 		printf ". script.sh ....\n"
-		[[ 0 == 1 ]]
+		false # do not change it to "return 0" because it will not work as expected in sourced mode
 	fi
 }
 

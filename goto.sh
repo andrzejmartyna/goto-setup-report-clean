@@ -15,9 +15,17 @@ YELLOW=$BYellow
 GREEN=$BGreen
 NC='\033[0m' # No Color
 
+is_zsh() {
+	if [ -n "$ZSH_VERSION" ]; then
+		true # do not change it to "return 1" because it will not work as expected in sourced mode
+	else
+		false # do not change it to "return 0" because it will not work as expected in sourced mode
+	fi
+}
+
 is_sourced() {
 	sourced=0
-	if [ -n "$ZSH_VERSION" ]; then
+	if is_zsh; then
 		if [[ $ZSH_EVAL_CONTEXT == *:file:shfunc ]]; then
 			sourced=1
 		fi
@@ -27,12 +35,12 @@ is_sourced() {
 		fi
 	fi
 	if [[ $sourced -eq 1 ]]; then
-		[[ 1 == 1 ]]
+		true # do not change it to "return 1" because it will not work as expected in sourced mode
 	else
 		printf "This script modifies the calling session.\n"
 		printf "It means you have to run this script in 'sourced' mode so by using dot-space-script like this:\n"
 		printf ". script.sh ....\n"
-		[[ 0 == 1 ]]
+		false # do not change it to "return 0" because it will not work as expected in sourced mode
 	fi
 }
 
@@ -51,11 +59,15 @@ success=0
 if [ $# -gt 0 ]; then
 	if [ $1 = "repo" ]; then
 		if is_sourced; then
-			code_dir="/Users/andrzej/Documents/CODE"
+			code_dir="/home/jajo/CODE"
 			search_str="$2"
 
 			# Find directories up to 2 levels deep, matching search_str, excluding those ending with sha1 or sha2
-			found_files=$(noglob find "$code_dir" -maxdepth 2 -type d -iname "*$search_str*" 2>/dev/null)
+			if is_zsh; then
+				found_files=$(noglob find "$code_dir" -maxdepth 2 -type d -iname "*$search_str*" 2>/dev/null)
+			else
+				found_files=$(find "$code_dir" -maxdepth 2 -type d -iname "*$search_str*" 2>/dev/null)
+			fi
 			if [ -z "$found_files" ]; then
 				printf "Warning: No directories found containing '$search_str'\n"
 			else

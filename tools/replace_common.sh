@@ -25,7 +25,6 @@ if stat -f %A "$TARGET_FILE" >/dev/null 2>&1; then
 else
     orig_perms=$(stat -c %a "$TARGET_FILE")
 fi
-echo $orig_perms
 
 # Output common part
 cat "$COMMON_FILE" > temp_replace_common.tmp
