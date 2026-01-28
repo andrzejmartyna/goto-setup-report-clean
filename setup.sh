@@ -62,14 +62,23 @@ if [ $# -gt 0 ]; then
 			printf "Before: EDITOR=$EDITOR\n"
 			printf "Before: K9S_EDITOR=$K9S_EDITOR\n"
 			printf "Before: KUBE_EDITOR=$KUBE_EDITOR\n"
+			printf "Before: GIT_EDITOR=$GIT_EDITOR\n"
+			printf "Before: VISUAL=$VISUAL\n"
+			printf "Before: EDITOR=$EDITOR\n"
 
 			export EDITOR="code -w"
 			export K9S_EDITOR="code -w"
 			export KUBE_EDITOR="code -w"
+			export GIT_EDITOR="code -w"
+			export VISUAL="code -w"
+			export EDITOR="$VISUAL"
 
 			printf "After: EDITOR=$EDITOR\n"
 			printf "After: K9S_EDITOR=$K9S_EDITOR\n"
 			printf "After: KUBE_EDITOR=$KUBE_EDITOR\n"
+			printf "After: GIT_EDITOR=$GIT_EDITOR\n"
+			printf "After: VISUAL=$VISUAL\n"
+			printf "After: EDITOR=$EDITOR\n"
 			success=1
 		fi
 	elif [ $1 = "editor_nano" ]; then
@@ -77,14 +86,23 @@ if [ $# -gt 0 ]; then
 			printf "Before: EDITOR=$EDITOR\n"
 			printf "Before: K9S_EDITOR=$K9S_EDITOR\n"
 			printf "Before: KUBE_EDITOR=$KUBE_EDITOR\n"
+			printf "Before: GIT_EDITOR=$GIT_EDITOR\n"
+			printf "Before: VISUAL=$VISUAL\n"
+			printf "Before: EDITOR=$EDITOR\n"
 
 			export EDITOR=nano
 			export K9S_EDITOR=nano
 			export KUBE_EDITOR=nano
+			export GIT_EDITOR=nano
+			export VISUAL=nano
+			export EDITOR="$VISUAL"
 
 			printf "After: EDITOR=$EDITOR\n"
 			printf "After: K9S_EDITOR=$K9S_EDITOR\n"
 			printf "After: KUBE_EDITOR=$KUBE_EDITOR\n"
+			printf "After: GIT_EDITOR=$GIT_EDITOR\n"
+			printf "After: VISUAL=$VISUAL\n"
+			printf "After: EDITOR=$EDITOR\n"
 			success=1
 		fi
 	fi
