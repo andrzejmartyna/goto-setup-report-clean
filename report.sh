@@ -57,14 +57,37 @@ is_sourced() {
 
 success=0
 if [ $# -gt 0 ]; then
-	if [ $1 = "git_pretty_log" ]; then
+	if [ "$1" = "git_pretty_log" ]; then
 		if [ $# -gt 1 ]; then
 			git log --pretty=format:'%C(yellow)%h %Cred%ai %Cblue%an%Cgreen%d %Creset%s' --date=short -n $2
 		else
 			git log --pretty=format:'%C(yellow)%h %Cred%ai %Cblue%an%Cgreen%d %Creset%s' --date=short
 		fi
 		success=1
-	elif [ $1 = "where_i_am" ]; then
+	elif [ "$1" = "git_my_latest_log" ]; then
+		AUTHOR="Andrzej Martyna"
+		LIMIT=50
+		DAYS=14
+		SEP=$'\x1f'
+		PATH_FILTER=""
+		PATH_ARGS=()
+		if [ -n "$PATH_FILTER" ]; then
+			PATH_ARGS=(-- "$PATH_FILTER")
+		fi
+
+		git log --all --color=always --date=iso-strict \
+			--pretty=format:"%H${SEP}%h${SEP}%ad${SEP}%an${SEP}%d${SEP}%s" \
+			--since="$DAYS days ago" -n "$LIMIT" --author="$AUTHOR" "${PATH_ARGS[@]}" |
+		while IFS="$SEP" read -r full short datetime author dec subject; do
+			ref=$(git name-rev --name-only --refs="refs/heads/*" "$full")
+			ref_clean="${ref%%~*}"
+			printf '%s\t%s\t\033[33m%s\033[0m \033[31m%s\033[0m \033[35m[%s]\033[0m \033[34m%s\033[32m%s\033[0m \033[32m%s\033[0m\n' \
+				"$ref_clean" "$ref" "$short" "$datetime" "$ref" "$author" "$dec" "$subject"
+		done |
+		sort -k1,1 -k4,4r |
+		cut -f3-
+		success=1
+	elif [ "$1" = "where_i_am" ]; then
 		printf "The shell is\n"
 		printf "$SHELL\n"
 		printf "Tips for customizations depending on the shell\n"
@@ -75,7 +98,8 @@ fi
 
 if [[ $success -ne 1 ]]; then
 	printf "${RED}USE: report.sh with one of the forms:${NC}\n"
-    printf "${YELLOW}    - report.sh git_pretty_log --> pretty prints git log with given number of commits${NC}\n"
+    printf "${YELLOW}    - report.sh git_pretty_log --> pretty prints git log${NC}\n"
     printf "${YELLOW}    - report.sh git_pretty_log X --> pretty prints git log with given number of commits${NC}\n"
+    printf "${YELLOW}    - report.sh git_my_latest_log --> pretty prints latest git changes${NC}\n"
     printf "${YELLOW}    - report.sh where_i_am --> reports some information about place you are now${NC}\n"
 fi
